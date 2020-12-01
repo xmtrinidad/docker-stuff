@@ -90,3 +90,35 @@ When using nodemon with docker for node.js apps, use the -L flag to detect chang
     "start": "nodemon -L server.js"
   }
   ```
+
+### Volumes and Bind Mounts Overview
+
+- Anonymous Volume
+  - docker run -v /app/data ...
+  - Created specifically for a single container
+  - Survives container shutdown/restart unless --rm is used
+  - Cannot be shared across containers
+  - Since it's anonymous, it can't be re-used (even on same image)
+  - Can be created with the VOLUME instruction in Dockerfile
+    - VOLUME { "/app/node_modules" }
+
+  -
+  
+- Named Volume
+  - docker run -v data:/app/data ...
+  - Created in generla - not tied to any specific container
+  - Survives container shutdown/restart/removal via Docker CLI
+  - Can be shared across containers
+  - Can be used for same container (across restarts)
+
+- Bind Mount
+  - docker run -v /path/to/code:/app/code
+  - Location on host file system, not tied to any specific container
+  - Survives container shutdown/restart - remove on host file system
+  - Can be shared across containers
+  - Can be re-used for same container
+
+## Lit Element Container Example
+
+docker run -d -p 8000:8000 --rm --name lit-container -v $(pwd):/app -v /app/node_modules lit-image
+  
